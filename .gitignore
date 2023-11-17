@@ -1,0 +1,8 @@
+.idea
+node_modules
+dist
+.env
+coverage
+build
+# nyc test coverage
+.nyc_output
