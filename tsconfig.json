@@ -107,6 +107,9 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": ["src/**/*.ts"],
+  "paths": {
+    "@middleware/*": ["src/middleware/*"]
+  },
   "exclude":[
     "./node_modules",
     "build"

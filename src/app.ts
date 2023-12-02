@@ -1,25 +1,29 @@
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
+import express from 'express';
+import * as http from 'http';
+import routes from './routes';
+import { applyCommonMiddleware, applyErrorMiddleware } from './utility/index';
 
-dotenv.config();
+const applicationServer = () => {
+  const app = express();
 
-class App {
-  public express: Express;
+  applyCommonMiddleware(app, routes);
 
-  constructor () {
-    this.express = express();
-    this.mountRoutes();
+  applyErrorMiddleware(app);
+
+  const server = http.createServer(app);
+  const PORT = process.env.PORT || 3001;
+
+  server.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+
+};
+
+export const startServer = async () => {
+  try {
+    applicationServer();
+  } catch(error){
+    console.error('Error in RabbitMQService:', error);
+    throw error;
   }
-
-  private mountRoutes (): void {
-    const router = express.Router();
-    router.get('/', (req: Request, res: Response) => {
-      res.json({
-        message: 'Hello World!'
-      });
-    });
-    this.express.use('/', router);
-  }
-}
-
-export default new App().express;
+};
